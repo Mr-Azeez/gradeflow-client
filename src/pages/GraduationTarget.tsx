@@ -250,15 +250,15 @@ const GraduationTarget = () => {
           {/* Soft purple lighting */}
           <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -translate-y-1/2" />
           <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-indigo-600/10 rounded-full blur-[100px] translate-y-1/3" />
-          
+
           {/* Dark gradient base */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900/95 via-[#0B1120]/95 to-slate-900/90" />
-          
+
           {/* Decorative target rings */}
           <div className="absolute right-[-10%] top-[-20%] w-[600px] h-[600px] border-[1px] border-purple-500/10 rounded-full" />
           <div className="absolute right-[0%] top-[-10%] w-[400px] h-[400px] border-[1px] border-purple-500/15 rounded-full" />
           <div className="absolute right-[10%] top-[0%] w-[200px] h-[200px] border-[1px] border-purple-500/20 rounded-full" />
-          
+
           {/* Small floating particles (subtle radial glow dots) */}
           <div className="absolute right-[20%] top-[30%] w-2 h-2 bg-purple-400/50 rounded-full blur-[1px]" />
           <div className="absolute right-[15%] top-[10%] w-1.5 h-1.5 bg-indigo-400/50 rounded-full blur-[1px]" />
@@ -266,7 +266,6 @@ const GraduationTarget = () => {
 
         {/* Top Section: Header & Target Graphic/Button */}
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between p-6 md:p-10 min-h-[260px]">
-          
           {/* Left Side */}
           <div className="flex items-start gap-6 max-w-2xl">
             {/* Target Icon */}
@@ -294,15 +293,22 @@ const GraduationTarget = () => {
           <div className="mt-8 md:mt-0 flex flex-col items-start md:items-end w-full md:w-auto relative">
             {/* Large Decorative Target Illustration */}
             <div className="hidden md:flex absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-20">
-              <Target size={180} className="text-purple-400" strokeWidth={0.5} />
+              <Target
+                size={180}
+                className="text-purple-400"
+                strokeWidth={0.5}
+              />
             </div>
 
             {/* Premium Set Target Button */}
-            <button 
+            <button
               onClick={() => setIsModalOpen(true)}
               className="relative z-20 group flex items-center justify-center w-full md:w-auto gap-2 px-6 py-3 rounded-xl border border-purple-500/30 bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 font-semibold transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.1)] hover:shadow-[0_0_30px_rgba(168,85,247,0.3)]"
             >
-              <Target size={18} className="group-hover:scale-110 transition-transform duration-300" />
+              <Target
+                size={18}
+                className="group-hover:scale-110 transition-transform duration-300"
+              />
               {semesterTarget.savedValue != null ? "Edit Target" : "Set Target"}
             </button>
           </div>
@@ -311,7 +317,6 @@ const GraduationTarget = () => {
         {/* Bottom Summary Panel */}
         <div className="relative z-10 w-full bg-slate-900/40 md:bg-slate-950/50 backdrop-blur-xl border-t-0 md:border-t border-slate-800/80 p-4 md:p-0">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-0 md:divide-x divide-slate-800/80">
-            
             {/* Column 1: Target CGPA */}
             <div className="col-span-1 md:col-span-3 p-5 md:p-6 flex flex-col justify-center items-start bg-slate-800/40 md:bg-transparent rounded-2xl md:rounded-none border border-slate-700/50 md:border-none">
               <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
@@ -340,15 +345,19 @@ const GraduationTarget = () => {
                       key={option.value}
                       onClick={() => setTargetCGPA(option.value)}
                       className={`flex items-center justify-between p-3 rounded-xl border transition-colors text-left ${
-                        active 
-                          ? "border-purple-500/50 bg-purple-500/10" 
+                        active
+                          ? "border-purple-500/50 bg-purple-500/10"
                           : "border-transparent hover:border-slate-700/50 bg-slate-800/30 md:bg-slate-800/30 hover:bg-slate-800/50 opacity-70 hover:opacity-100"
                       }`}
                     >
-                      <span className={`text-sm ${active ? "font-bold text-purple-300" : "font-medium text-slate-400"}`}>
+                      <span
+                        className={`text-sm ${active ? "font-bold text-purple-300" : "font-medium text-slate-400"}`}
+                      >
                         {option.label}
                       </span>
-                      <span className={`text-sm font-mono ${active ? "text-purple-300" : "text-slate-500"}`}>
+                      <span
+                        className={`text-sm font-mono ${active ? "text-purple-300" : "text-slate-500"}`}
+                      >
                         {option.value.toFixed(2)}
                       </span>
                     </button>
@@ -369,11 +378,19 @@ const GraduationTarget = () => {
                     Target Set: {semesterTarget.savedValue.toFixed(2)}
                   </div>
                   {semesterTarget.currentSemesterId && (
-                    <button 
-                      onClick={() => navigate(`/whatif?mode=current&semester=${semesterTarget.currentSemesterId}`)} 
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/whatif?mode=b&target=${semesterTarget.savedValue}`,
+                        )
+                      }
                       className="text-xs text-purple-400 hover:text-purple-300 transition-colors flex items-center gap-1 group"
                     >
-                      Plan grades <Target size={12} className="group-hover:translate-x-1 transition-transform" />
+                      Plan grades{" "}
+                      <Target
+                        size={12}
+                        className="group-hover:translate-x-1 transition-transform"
+                      />
                     </button>
                   )}
                 </div>
@@ -383,8 +400,8 @@ const GraduationTarget = () => {
                     <Info size={16} className="text-slate-400" />
                     Ready for Planning
                   </div>
-                  <button 
-                    onClick={() => setIsModalOpen(true)} 
+                  <button
+                    onClick={() => setIsModalOpen(true)}
                     className="text-xs text-slate-400 hover:text-white transition-colors"
                   >
                     Click 'Set Target' to begin
@@ -392,7 +409,6 @@ const GraduationTarget = () => {
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </motion.div>
@@ -433,11 +449,16 @@ const GraduationTarget = () => {
               icon={<Target size={20} />}
               label="Required avg GP"
               value={
-                result.status === "NOT_ACHIEVABLE" || result.requiredAverageGP == null
+                result.status === "NOT_ACHIEVABLE" ||
+                result.requiredAverageGP == null
                   ? ""
                   : result.requiredAverageGP.toFixed(2)
               }
-              subtitle={result.status === "NOT_ACHIEVABLE" ? "Not achievable" : "Across final courses"}
+              subtitle={
+                result.status === "NOT_ACHIEVABLE"
+                  ? "Not achievable"
+                  : "Across final courses"
+              }
             />
           </motion.div>
 
@@ -449,31 +470,72 @@ const GraduationTarget = () => {
           >
             {/* Header */}
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-[var(--text-primary)]">Final CGPA range</span>
+              <span className="text-sm font-medium text-[var(--text-primary)]">
+                Final CGPA range
+              </span>
               <span className="text-xs font-mono text-[var(--text-secondary)]">
-                {result.minAchievableCGPA.toFixed(2)}&nbsp;–&nbsp;{result.maxAchievableCGPA.toFixed(2)}
+                {result.minAchievableCGPA.toFixed(2)}&nbsp;–&nbsp;
+                {result.maxAchievableCGPA.toFixed(2)}
               </span>
             </div>
 
             {/* Status-aware plain-English description */}
             <div className="mt-3 mb-0">
-              {(result.status === "ALREADY_SECURED" || result.status === "ALREADY_SECURED_HIGHER") ? (
-                <p className="text-xs leading-relaxed" style={{ color: "var(--success)" }}>
-                  Your minimum possible CGPA ({result.minAchievableCGPA.toFixed(2)}) already meets your target — you'll graduate with at least a {getClassificationLabel(result.minAchievableCGPA)} no matter your final grades.
+              {result.status === "ALREADY_SECURED" ||
+              result.status === "ALREADY_SECURED_HIGHER" ? (
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{ color: "var(--success)" }}
+                >
+                  Your minimum possible CGPA (
+                  {result.minAchievableCGPA.toFixed(2)}) already meets your
+                  target — you'll graduate with at least a{" "}
+                  {getClassificationLabel(result.minAchievableCGPA)} no matter
+                  your final grades.
                 </p>
               ) : result.status === "NOT_ACHIEVABLE" ? (
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-secondary)" }}>
-                  Even with all A grades you can only reach {result.maxAchievableCGPA.toFixed(2)} ({getClassificationLabel(result.maxAchievableCGPA)}) — your {targetCGPA.toFixed(2)} target cannot be achieved this semester.
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  Even with all A grades you can only reach{" "}
+                  {result.maxAchievableCGPA.toFixed(2)} (
+                  {getClassificationLabel(result.maxAchievableCGPA)}) — your{" "}
+                  {targetCGPA.toFixed(2)} target cannot be achieved this
+                  semester.
                 </p>
               ) : (
-                <p className="text-xs leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                <p
+                  className="text-xs leading-relaxed"
+                  style={{ color: "var(--text-muted)" }}
+                >
                   Your final CGPA will land between{" "}
-                  <span className="font-mono font-semibold" style={{ color: "var(--text-secondary)" }}>{result.minAchievableCGPA.toFixed(2)}</span>
-                  {" "}({getClassificationLabel(result.minAchievableCGPA)}) and{" "}
-                  <span className="font-mono font-semibold" style={{ color: "var(--text-secondary)" }}>{result.maxAchievableCGPA.toFixed(2)}</span>
-                  {" "}({getClassificationLabel(result.maxAchievableCGPA)}).
+                  <span
+                    className="font-mono font-semibold"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {result.minAchievableCGPA.toFixed(2)}
+                  </span>{" "}
+                  ({getClassificationLabel(result.minAchievableCGPA)}) and{" "}
+                  <span
+                    className="font-mono font-semibold"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {result.maxAchievableCGPA.toFixed(2)}
+                  </span>{" "}
+                  ({getClassificationLabel(result.maxAchievableCGPA)}).
                   {result.requiredAverageGP != null && (
-                    <> Averaging below <span className="font-mono font-semibold" style={{ color: "var(--text-secondary)" }}>{result.requiredAverageGP.toFixed(2)}</span> GP across your final courses will miss the target.</>
+                    <>
+                      {" "}
+                      Averaging below{" "}
+                      <span
+                        className="font-mono font-semibold"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
+                        {result.requiredAverageGP.toFixed(2)}
+                      </span>{" "}
+                      GP across your final courses will miss the target.
+                    </>
                   )}
                 </p>
               )}
@@ -486,9 +548,9 @@ const GraduationTarget = () => {
                 Math.max(lo, Math.min(hi, v));
 
               const currentPct = toPercent(result.currentCGPA);
-              const targetPct  = toPercent(targetCGPA);
-              const minPct     = toPercent(result.minAchievableCGPA);
-              const maxPct     = toPercent(result.maxAchievableCGPA);
+              const targetPct = toPercent(targetCGPA);
+              const minPct = toPercent(result.minAchievableCGPA);
+              const maxPct = toPercent(result.maxAchievableCGPA);
 
               const zones = [
                 { value: 1.5, label: "3rd" },
@@ -504,25 +566,56 @@ const GraduationTarget = () => {
                     {/* Current CGPA label */}
                     <div
                       className="absolute bottom-0 flex flex-col items-center"
-                      style={{ left: `${clamp(currentPct, 3, 93)}%`, transform: "translateX(-50%)" }}
+                      style={{
+                        left: `${clamp(currentPct, 3, 93)}%`,
+                        transform: "translateX(-50%)",
+                      }}
                     >
-                      <span className="text-[10px] font-mono font-semibold leading-none" style={{ color: "var(--text-secondary)" }}>
+                      <span
+                        className="text-[10px] font-mono font-semibold leading-none"
+                        style={{ color: "var(--text-secondary)" }}
+                      >
                         {result.currentCGPA.toFixed(2)}
                       </span>
-                      <span className="text-[9px] leading-none mt-0.5" style={{ color: "var(--text-muted)" }}>now</span>
-                      <div className="w-px h-2 mt-1" style={{ background: "var(--text-secondary)", opacity: 0.4 }} />
+                      <span
+                        className="text-[9px] leading-none mt-0.5"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        now
+                      </span>
+                      <div
+                        className="w-px h-2 mt-1"
+                        style={{
+                          background: "var(--text-secondary)",
+                          opacity: 0.4,
+                        }}
+                      />
                     </div>
 
                     {/* Target CGPA label */}
                     <div
                       className="absolute bottom-0 flex flex-col items-center"
-                      style={{ left: `${clamp(targetPct, 3, 97)}%`, transform: "translateX(-50%)" }}
+                      style={{
+                        left: `${clamp(targetPct, 3, 97)}%`,
+                        transform: "translateX(-50%)",
+                      }}
                     >
-                      <span className="text-[10px] font-mono font-bold leading-none" style={{ color: "var(--accent)" }}>
+                      <span
+                        className="text-[10px] font-mono font-bold leading-none"
+                        style={{ color: "var(--accent)" }}
+                      >
                         {targetCGPA.toFixed(2)}
                       </span>
-                      <span className="text-[9px] leading-none mt-0.5" style={{ color: "var(--accent)", opacity: 0.7 }}>target</span>
-                      <div className="w-px h-2 mt-1" style={{ background: "var(--accent)" }} />
+                      <span
+                        className="text-[9px] leading-none mt-0.5"
+                        style={{ color: "var(--accent)", opacity: 0.7 }}
+                      >
+                        target
+                      </span>
+                      <div
+                        className="w-px h-2 mt-1"
+                        style={{ background: "var(--accent)" }}
+                      />
                     </div>
                   </div>
 
@@ -550,7 +643,8 @@ const GraduationTarget = () => {
                       style={{
                         left: `${minPct}%`,
                         width: `${Math.max(0, maxPct - minPct)}%`,
-                        background: "linear-gradient(90deg, rgba(108,99,255,0.45) 0%, rgba(108,99,255,0.88) 100%)",
+                        background:
+                          "linear-gradient(90deg, rgba(108,99,255,0.45) 0%, rgba(108,99,255,0.88) 100%)",
                       }}
                     />
 
@@ -574,7 +668,8 @@ const GraduationTarget = () => {
                         width: 18,
                         height: 18,
                         background: "var(--accent)",
-                        boxShadow: "0 0 0 3px rgba(108,99,255,0.25), 0 0 12px rgba(108,99,255,0.3)",
+                        boxShadow:
+                          "0 0 0 3px rgba(108,99,255,0.25), 0 0 12px rgba(108,99,255,0.3)",
                       }}
                     />
                   </div>
@@ -584,14 +679,24 @@ const GraduationTarget = () => {
                     {/* 1.0 at the left edge */}
                     <span
                       className="absolute text-[10px] font-mono"
-                      style={{ left: "0%", top: 0, color: "var(--text-muted)", opacity: 0.55 }}
+                      style={{
+                        left: "0%",
+                        top: 0,
+                        color: "var(--text-muted)",
+                        opacity: 0.55,
+                      }}
                     >
                       1.0
                     </span>
                     {/* 5.0 at the right edge */}
                     <span
                       className="absolute text-[10px] font-mono"
-                      style={{ right: "0%", top: 0, color: "var(--text-muted)", opacity: 0.55 }}
+                      style={{
+                        right: "0%",
+                        top: 0,
+                        color: "var(--text-muted)",
+                        opacity: 0.55,
+                      }}
                     >
                       5.0
                     </span>
@@ -600,12 +705,22 @@ const GraduationTarget = () => {
                       <div
                         key={value}
                         className="absolute flex flex-col items-center"
-                        style={{ left: `${toPercent(value)}%`, top: 0, transform: "translateX(-50%)" }}
+                        style={{
+                          left: `${toPercent(value)}%`,
+                          top: 0,
+                          transform: "translateX(-50%)",
+                        }}
                       >
-                        <span className="text-[10px] font-mono leading-none" style={{ color: "var(--text-muted)", opacity: 0.65 }}>
+                        <span
+                          className="text-[10px] font-mono leading-none"
+                          style={{ color: "var(--text-muted)", opacity: 0.65 }}
+                        >
                           {value.toFixed(1)}
                         </span>
-                        <span className="text-[9px] font-medium leading-none mt-0.5" style={{ color: "var(--text-muted)", opacity: 0.45 }}>
+                        <span
+                          className="text-[9px] font-medium leading-none mt-0.5"
+                          style={{ color: "var(--text-muted)", opacity: 0.45 }}
+                        >
                           {label}
                         </span>
                       </div>
@@ -620,27 +735,47 @@ const GraduationTarget = () => {
               <div className="flex items-center gap-2">
                 <div
                   className="w-3.5 h-3.5 rounded-full border-2 flex-shrink-0"
-                  style={{ borderColor: "var(--text-secondary)", background: "var(--bg-card)" }}
+                  style={{
+                    borderColor: "var(--text-secondary)",
+                    background: "var(--bg-card)",
+                  }}
                 />
-                <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--text-muted)" }}
+                >
                   Current CGPA ({result.currentCGPA.toFixed(2)})
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="w-3.5 h-3.5 rounded-full flex-shrink-0"
-                  style={{ background: "var(--accent)", boxShadow: "0 0 0 2px rgba(108,99,255,0.25)" }}
+                  style={{
+                    background: "var(--accent)",
+                    boxShadow: "0 0 0 2px rgba(108,99,255,0.25)",
+                  }}
                 />
-                <span className="text-xs" style={{ color: "var(--text-muted)" }}>
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--text-muted)" }}
+                >
                   Target ({targetCGPA.toFixed(2)})
                 </span>
               </div>
               <div className="flex items-center gap-2">
                 <div
                   className="w-8 h-2 rounded-full flex-shrink-0"
-                  style={{ background: "linear-gradient(90deg, rgba(108,99,255,0.45), rgba(108,99,255,0.88))" }}
+                  style={{
+                    background:
+                      "linear-gradient(90deg, rgba(108,99,255,0.45), rgba(108,99,255,0.88))",
+                  }}
                 />
-                <span className="text-xs" style={{ color: "var(--text-muted)" }}>Achievable range</span>
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Achievable range
+                </span>
               </div>
             </div>
           </motion.div>
@@ -656,14 +791,14 @@ const GraduationTarget = () => {
               <h3 className="text-lg font-semibold text-[var(--text-primary)]">
                 Final semester breakdown
               </h3>
-              <button 
+              <button
                 onClick={() => setShowCalculationInfo(!showCalculationInfo)}
                 className="text-xs font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] transition-colors px-3 py-1.5 rounded-lg hover:bg-[var(--surface-1)]"
               >
                 How it's calculated
               </button>
             </div>
-            
+
             <AnimatePresence>
               {showCalculationInfo && (
                 <motion.div
@@ -672,7 +807,7 @@ const GraduationTarget = () => {
                   exit={{ height: 0, opacity: 0 }}
                   className="overflow-hidden mb-6"
                 >
-                  <div 
+                  <div
                     className="mt-2"
                     style={{
                       background: "var(--surface-1)",
@@ -681,31 +816,36 @@ const GraduationTarget = () => {
                       padding: "1rem 1.25rem",
                       fontSize: "13px",
                       color: "var(--text-secondary)",
-                      lineHeight: "1.6"
+                      lineHeight: "1.6",
                     }}
                   >
-                    <p className="font-semibold text-[var(--text-primary)] mb-2">How the required GP is calculated</p>
+                    <p className="font-semibold text-[var(--text-primary)] mb-2">
+                      How the required GP is calculated
+                    </p>
                     <p className="mb-4">
-                      Each remaining course is treated equally. The total grade points needed
-                      to reach your target CGPA are spread across all courses weighted by their
-                      credit units.
+                      Each remaining course is treated equally. The total grade
+                      points needed to reach your target CGPA are spread across
+                      all courses weighted by their credit units.
                     </p>
                     <div className="mb-4 space-y-2 text-xs sm:text-[13px] break-words">
                       <p className="font-mono text-[var(--text-primary)] whitespace-normal">
-                        Required total GP = (Target CGPA x Total units) - (Current GP sum)
+                        Required total GP = (Target CGPA x Total units) -
+                        (Current GP sum)
                       </p>
                       <p className="font-mono text-[var(--text-primary)] whitespace-normal">
-                        Required avg GP per course = Required total GP / Remaining credit units
+                        Required avg GP per course = Required total GP /
+                        Remaining credit units
                       </p>
                     </div>
                     <p className="mb-4">
-                      If the required average exceeds 5.0 (the maximum), the target is marked
-                      Not achievable. If your minimum possible CGPA already meets the target,
-                      it's marked Already secured.
+                      If the required average exceeds 5.0 (the maximum), the
+                      target is marked Not achievable. If your minimum possible
+                      CGPA already meets the target, it's marked Already
+                      secured.
                     </p>
                     <p className="text-[var(--text-muted)] italic">
-                      Note: This assumes you pass all courses. Zero-unit courses are excluded
-                      from the calculation.
+                      Note: This assumes you pass all courses. Zero-unit courses
+                      are excluded from the calculation.
                     </p>
                   </div>
                 </motion.div>
@@ -713,9 +853,10 @@ const GraduationTarget = () => {
             </AnimatePresence>
 
             <p className="text-sm text-[var(--text-secondary)] mb-6">
-              Minimum grade point per course using equal distribution across all remaining courses.
+              Minimum grade point per course using equal distribution across all
+              remaining courses.
             </p>
-            
+
             <div className="glass-card overflow-hidden">
               {result.finalSemesterCourses.length === 0 ? (
                 <div className="p-8">
@@ -735,25 +876,49 @@ const GraduationTarget = () => {
                       let gradeCell: React.ReactNode;
 
                       if (course.credit_units === 0) {
-                        gpCell = <span className="text-[var(--text-muted)]">—</span>;
-                        gradeCell = <span className="text-[var(--text-muted)]">—</span>;
-                      } else if (result.status === "NOT_ACHIEVABLE") {
-                        gpCell = <span className="text-[var(--text-muted)]">—</span>;
-                        gradeCell = <span className="text-[var(--text-muted)]">—</span>;
-                      } else if (result.status === "ALREADY_SECURED" || result.status === "ALREADY_SECURED_HIGHER") {
-                        gpCell = <span className="text-[var(--text-muted)]">—</span>;
+                        gpCell = (
+                          <span className="text-[var(--text-muted)]">—</span>
+                        );
                         gradeCell = (
-                          <span className="badge border inline-block" style={getGradeBadgeStyle("E")}>
+                          <span className="text-[var(--text-muted)]">—</span>
+                        );
+                      } else if (result.status === "NOT_ACHIEVABLE") {
+                        gpCell = (
+                          <span className="text-[var(--text-muted)]">—</span>
+                        );
+                        gradeCell = (
+                          <span className="text-[var(--text-muted)]">—</span>
+                        );
+                      } else if (
+                        result.status === "ALREADY_SECURED" ||
+                        result.status === "ALREADY_SECURED_HIGHER"
+                      ) {
+                        gpCell = (
+                          <span className="text-[var(--text-muted)]">—</span>
+                        );
+                        gradeCell = (
+                          <span
+                            className="badge border inline-block"
+                            style={getGradeBadgeStyle("E")}
+                          >
                             E (min)
                           </span>
                         );
                       } else {
-                        gpCell = course.requiredGradePoint == null
-                          ? <span className="text-[var(--text-muted)]">—</span>
-                          : <span className="font-mono text-[var(--text-primary)] font-bold">{course.requiredGradePoint.toFixed(2)}</span>;
+                        gpCell =
+                          course.requiredGradePoint == null ? (
+                            <span className="text-[var(--text-muted)]">—</span>
+                          ) : (
+                            <span className="font-mono text-[var(--text-primary)] font-bold">
+                              {course.requiredGradePoint.toFixed(2)}
+                            </span>
+                          );
 
                         gradeCell = gradeInfo ? (
-                          <span className="badge border inline-block" style={getGradeBadgeStyle(gradeInfo.letter)}>
+                          <span
+                            className="badge border inline-block"
+                            style={getGradeBadgeStyle(gradeInfo.letter)}
+                          >
                             {gradeInfo.letter} ({gradeInfo.range})
                           </span>
                         ) : (
@@ -808,51 +973,83 @@ const GraduationTarget = () => {
                     <table className="w-full table-fixed">
                       <thead>
                         <tr className="border-b border-[var(--border)]">
-                          {["Code", "Course title", "Units", "Min. needed GP", "Grade needed"].map(
-                            (heading) => (
-                              <th
-                                key={heading}
-                                className={`${heading === "Code" || heading === "Course title" ? "text-left" : "text-center"} px-3 py-3 sm:px-6 sm:py-4 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider`}
-                              >
-                                {heading}
-                              </th>
-                            ),
-                          )}
+                          {[
+                            "Code",
+                            "Course title",
+                            "Units",
+                            "Min. needed GP",
+                            "Grade needed",
+                          ].map((heading) => (
+                            <th
+                              key={heading}
+                              className={`${heading === "Code" || heading === "Course title" ? "text-left" : "text-center"} px-3 py-3 sm:px-6 sm:py-4 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider`}
+                            >
+                              {heading}
+                            </th>
+                          ))}
                         </tr>
                       </thead>
                       <tbody>
                         {result.finalSemesterCourses.map((course, index) => {
-                          const gradeInfo = getGradeInfo(course.requiredGradePoint);
-                          
+                          const gradeInfo = getGradeInfo(
+                            course.requiredGradePoint,
+                          );
+
                           let gpCell: React.ReactNode;
                           let gradeCell: React.ReactNode;
-                          
+
                           if (course.credit_units === 0) {
-                            gpCell = <span className="text-[var(--text-muted)]"></span>;
-                            gradeCell = <span className="text-[var(--text-muted)]"></span>;
-                          } else if (result.status === "NOT_ACHIEVABLE") {
-                            gpCell = <span className="text-[var(--text-muted)]"></span>;
-                            gradeCell = <span className="text-[var(--text-muted)]"></span>;
-                          } else if (result.status === "ALREADY_SECURED" || result.status === "ALREADY_SECURED_HIGHER") {
-                            gpCell = <span className="text-[var(--text-muted)]"></span>;
+                            gpCell = (
+                              <span className="text-[var(--text-muted)]"></span>
+                            );
                             gradeCell = (
-                              <span className="badge border inline-block" style={getGradeBadgeStyle("E")}>
+                              <span className="text-[var(--text-muted)]"></span>
+                            );
+                          } else if (result.status === "NOT_ACHIEVABLE") {
+                            gpCell = (
+                              <span className="text-[var(--text-muted)]"></span>
+                            );
+                            gradeCell = (
+                              <span className="text-[var(--text-muted)]"></span>
+                            );
+                          } else if (
+                            result.status === "ALREADY_SECURED" ||
+                            result.status === "ALREADY_SECURED_HIGHER"
+                          ) {
+                            gpCell = (
+                              <span className="text-[var(--text-muted)]"></span>
+                            );
+                            gradeCell = (
+                              <span
+                                className="badge border inline-block"
+                                style={getGradeBadgeStyle("E")}
+                              >
                                 E (min)
                               </span>
                             );
                           } else {
-                            gpCell = course.requiredGradePoint == null 
-                              ? <span className="text-[var(--text-muted)]"></span> 
-                              : <span className="font-mono text-[var(--text-primary)] font-bold">{course.requiredGradePoint.toFixed(2)}</span>;
-                              
+                            gpCell =
+                              course.requiredGradePoint == null ? (
+                                <span className="text-[var(--text-muted)]"></span>
+                              ) : (
+                                <span className="font-mono text-[var(--text-primary)] font-bold">
+                                  {course.requiredGradePoint.toFixed(2)}
+                                </span>
+                              );
+
                             if (gradeInfo) {
                               gradeCell = (
-                                <span className="badge border inline-block" style={getGradeBadgeStyle(gradeInfo.letter)}>
+                                <span
+                                  className="badge border inline-block"
+                                  style={getGradeBadgeStyle(gradeInfo.letter)}
+                                >
                                   {gradeInfo.letter} ({gradeInfo.range})
                                 </span>
                               );
                             } else {
-                              gradeCell = <span className="text-[var(--text-muted)]"></span>;
+                              gradeCell = (
+                                <span className="text-[var(--text-muted)]"></span>
+                              );
                             }
                           }
 
@@ -863,10 +1060,14 @@ const GraduationTarget = () => {
                               style={{ animationDelay: `${index * 50}ms` }}
                             >
                               <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm font-semibold text-[var(--text-primary)] uppercase">
-                                <span className="block truncate">{course.course_code}</span>
+                                <span className="block truncate">
+                                  {course.course_code}
+                                </span>
                               </td>
                               <td className="px-3 py-3 sm:px-6 sm:py-4 text-sm text-[var(--text-secondary)]">
-                                <span className="block truncate">{course.course_title}</span>
+                                <span className="block truncate">
+                                  {course.course_title}
+                                </span>
                               </td>
                               <td className="px-3 py-3 sm:px-6 sm:py-4 text-center text-sm font-mono text-[var(--text-secondary)]">
                                 {course.credit_units}
@@ -885,7 +1086,10 @@ const GraduationTarget = () => {
                   </div>
                   <div className="px-6 py-4 border-t border-[var(--border)] bg-[var(--surface-1)]/30 flex items-center gap-2">
                     <Info size={16} className="text-[var(--text-muted)]" />
-                    <span className="text-xs text-[var(--text-muted)]">Assumes equal weight distribution across all remaining courses.</span>
+                    <span className="text-xs text-[var(--text-muted)]">
+                      Assumes equal weight distribution across all remaining
+                      courses.
+                    </span>
                   </div>
                 </>
               )}
@@ -897,13 +1101,13 @@ const GraduationTarget = () => {
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               className="w-full max-w-md rounded-2xl bg-[var(--bg-card)] p-6 border border-[var(--border)] shadow-xl relative"
             >
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="absolute top-4 right-4 text-[var(--text-muted)] hover:text-[var(--text-primary)]"
               >
@@ -914,7 +1118,9 @@ const GraduationTarget = () => {
               </h2>
 
               {semesterTarget.loading ? (
-                <p className="text-sm text-[var(--text-secondary)]">Loading target...</p>
+                <p className="text-sm text-[var(--text-secondary)]">
+                  Loading target...
+                </p>
               ) : !currentSemesterId ? (
                 <p className="text-sm text-[var(--text-secondary)]">
                   No active semester. Start a semester to set a target.
@@ -949,7 +1155,8 @@ const GraduationTarget = () => {
                             if (raw === "") return;
                             const parsed = Number(raw);
                             if (!Number.isFinite(parsed)) return;
-                            const rounded = roundToTwoDecimals(parsed).toFixed(2);
+                            const rounded =
+                              roundToTwoDecimals(parsed).toFixed(2);
                             if (rounded !== raw) {
                               setSemesterTarget((current) => ({
                                 ...current,
@@ -991,7 +1198,8 @@ const GraduationTarget = () => {
                             setSemesterTarget((current) => ({
                               ...current,
                               editMode: true,
-                              draftValue: current.currentTargetGpa?.toFixed(2) ?? "",
+                              draftValue:
+                                current.currentTargetGpa?.toFixed(2) ?? "",
                             }))
                           }
                           className="text-sm font-medium text-[var(--accent)] hover:underline"
@@ -999,7 +1207,10 @@ const GraduationTarget = () => {
                           Edit
                         </button>
                       </div>
-                      <button onClick={() => setIsModalOpen(false)} className="btn w-full border border-[var(--border)] bg-transparent hover:bg-[var(--surface-1)]">
+                      <button
+                        onClick={() => setIsModalOpen(false)}
+                        className="btn w-full border border-[var(--border)] bg-transparent hover:bg-[var(--surface-1)]"
+                      >
                         Close
                       </button>
                     </div>
