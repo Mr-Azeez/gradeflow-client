@@ -168,6 +168,8 @@ const isLaterSemester = (a: Semester, b: Semester | null) => {
   return a.semester_number > b.semester_number;
 };
 
+const roundToTwoDecimals = (value: number) => Math.round(value * 100) / 100;
+
 const Courses = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [semesters, setSemesters] = useState<Semester[]>([]);
@@ -794,7 +796,20 @@ const Courses = () => {
         </p>
       )}
 
-      {courseError ? (
+      {semesterError ? (
+        <div className="flex min-h-[40vh] items-center justify-center">
+          <EmptyState
+            icon={AlertTriangle}
+            title="Couldn't load semesters"
+            description={semesterError}
+            action={
+              <button type="button" onClick={() => void fetchSemesters()} className="btn btn-primary">
+                Retry
+              </button>
+            }
+          />
+        </div>
+      ) : courseError ? (
         <div className="flex min-h-[40vh] items-center justify-center">
           <EmptyState
             icon={AlertTriangle}
@@ -1121,6 +1136,8 @@ const Courses = () => {
                     type="number"
                     min="1"
                     max="12"
+                    step="1"
+                    inputMode="numeric"
                     className="input-field"
                     placeholder="3"
                     value={formData.credit_units}
@@ -1168,19 +1185,31 @@ const Courses = () => {
                 <label className="block text-sm font-medium text-surface-400 mb-1.5">
                   Score (0-100)
                 </label>
-                <input
-                  id="course-score"
-                  type="number"
-                  min="0"
-                  max="100"
-                  className="input-field"
-                  placeholder="75"
-                  value={formData.score}
-                  onChange={(e) => {
-                    setFormData({ ...formData, score: e.target.value });
-                    if (scoreError) setScoreError("");
-                  }}
-                />
+                  <input
+                    id="course-score"
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    inputMode="decimal"
+                    className="input-field"
+                    placeholder="75"
+                    value={formData.score}
+                    onChange={(e) => {
+                      setFormData({ ...formData, score: e.target.value });
+                      if (scoreError) setScoreError("");
+                    }}
+                    onBlur={() => {
+                      const raw = formData.score.trim();
+                      if (raw === "") return;
+                      const parsed = Number(raw);
+                      if (!Number.isFinite(parsed)) return;
+                      const rounded = roundToTwoDecimals(parsed).toFixed(2);
+                      if (rounded !== raw) {
+                        setFormData((current) => ({ ...current, score: rounded }));
+                      }
+                    }}
+                  />
                 <p className="text-xs text-surface-500 mt-1">
                   Leave blank for ungraded final semester courses.
                 </p>

@@ -85,6 +85,8 @@ const getClassificationLabel = (cgpa: number): string => {
   return "Pass";
 };
 
+const roundToTwoDecimals = (value: number) => Math.round(value * 100) / 100;
+
 const getGradeLetterFromGP = (gradePoint: number): string => {
   if (gradePoint > 4) return "A";
   if (gradePoint > 3) return "B";
@@ -862,7 +864,7 @@ const GoalPlannerMode = ({
   }, [redirectedTarget]);
 
   const handleCalculate = () => {
-    const parsed = Number(goalInput);
+    const parsed = roundToTwoDecimals(Number(goalInput));
     if (!Number.isFinite(parsed) || parsed < 1 || parsed > 5) {
       setValidationError("Enter a goal between 1.00 and 5.00.");
       return;
@@ -970,8 +972,19 @@ const GoalPlannerMode = ({
               min="1"
               max="5"
               step="0.01"
+              inputMode="decimal"
               value={goalInput}
               onChange={(e) => handleInputChange(e.target.value)}
+              onBlur={() => {
+                const raw = goalInput.trim();
+                if (raw === "") return;
+                const parsed = Number(raw);
+                if (!Number.isFinite(parsed)) return;
+                const rounded = roundToTwoDecimals(parsed).toFixed(2);
+                if (rounded !== raw) {
+                  setGoalInput(rounded);
+                }
+              }}
               className="input-field w-full font-mono"
               placeholder="e.g. 4.50"
             />

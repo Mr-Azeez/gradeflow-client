@@ -1,14 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import { useAuth } from "./context/AuthContext";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import Semesters from "./pages/Semesters";
-import Courses from "./pages/Courses";
-import WhatIf from "./pages/WhatIf";
-import GraduationTarget from "./pages/GraduationTarget";
-import Profile from "./pages/Profile";
 import AppLayout from "./components/AppLayout";
+import LoadingScreen from "./components/LoadingScreen";
+
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Dashboard = lazy(() => import("./pages/Dashboard"));
+const Semesters = lazy(() => import("./pages/Semesters"));
+const Courses = lazy(() => import("./pages/Courses"));
+const WhatIf = lazy(() => import("./pages/WhatIf"));
+const GraduationTarget = lazy(() => import("./pages/GraduationTarget"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -18,30 +21,32 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+      <Suspense fallback={<LoadingScreen />}>
+        <Routes>
+          {/* Public routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* Protected routes with sidebar layout */}
-        <Route
-          element={
-            <ProtectedRoute>
-              <AppLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/semesters" element={<Semesters />} />
-          <Route path="/courses" element={<Courses />} />
-          <Route path="/whatif" element={<WhatIf />} />
-          <Route path="/graduation-target" element={<GraduationTarget />} />
-          <Route path="/profile" element={<Profile />} />
-        </Route>
+          {/* Protected routes with sidebar layout */}
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/semesters" element={<Semesters />} />
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/whatif" element={<WhatIf />} />
+            <Route path="/graduation-target" element={<GraduationTarget />} />
+            <Route path="/profile" element={<Profile />} />
+          </Route>
 
-        {/* Catch-all */}
-        <Route path="*" element={<Navigate to="/login" />} />
-      </Routes>
+          {/* Catch-all */}
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

@@ -148,6 +148,58 @@ const getInitials = (name: string) => {
     .toUpperCase();
 };
 
+const loadImageElement = (file: File) =>
+  new Promise<HTMLImageElement>((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(image);
+    };
+    image.onerror = (event) => {
+      URL.revokeObjectURL(objectUrl);
+      reject(event);
+    };
+
+    image.src = objectUrl;
+  });
+
+const resizeAvatarForUpload = async (file: File): Promise<File | null> => {
+  try {
+    const image = await loadImageElement(file);
+    const naturalWidth = image.naturalWidth || image.width;
+    const naturalHeight = image.naturalHeight || image.height;
+    const longestEdge = Math.max(naturalWidth, naturalHeight);
+
+    if (!longestEdge) return null;
+
+    const scale = Math.min(1, 512 / longestEdge);
+    const width = Math.max(1, Math.round(naturalWidth * scale));
+    const height = Math.max(1, Math.round(naturalHeight * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+
+    const context = canvas.getContext("2d");
+    if (!context) return null;
+
+    context.drawImage(image, 0, 0, width, height);
+
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob((result) => resolve(result), "image/jpeg", 0.85);
+    });
+
+    if (!blob) return null;
+
+    const baseName = file.name.replace(/\.[^.]+$/, "") || "avatar";
+    return new File([blob], `${baseName}.jpg`, { type: "image/jpeg" });
+  } catch {
+    return null;
+  }
+};
+
 const Profile = () => {
   const navigate = useNavigate();
   const { user: authUser, updateUser } = useAuth();
@@ -194,32 +246,33 @@ const Profile = () => {
 
     const fetchProfile = async () => {
       try {
-        const profileResult = await api.get("/users/me");
+        const [profileResult, analyticsResult] = await Promise.allSettled([
+          api.get("/users/me"),
+          api.get("/analytics"),
+        ]);
 
         if (!active) return;
 
-        const user = profileResult.data.user as UserProfile;
-        const semesterData = profileResult.data.semesters as Semester[];
-        setProfile(user);
-        setSemesters(semesterData);
-        setProfileDraft({
-          name: user.name ?? "",
-          matric_number: user.matric_number ?? "",
-          department: user.department ?? "",
-        });
-
-        void api
-          .get("/analytics")
-          .then((analyticsResult) => {
-            if (!active) return;
-            const value = Number(analyticsResult.data?.cgpa);
-            setCgpa(Number.isFinite(value) ? value : null);
-          })
-          .catch(() => {
-            if (active) {
-              setCgpa(null);
-            }
+        if (profileResult.status === "fulfilled") {
+          const user = profileResult.value.data.user as UserProfile;
+          const semesterData = profileResult.value.data.semesters as Semester[];
+          setProfile(user);
+          setSemesters(semesterData);
+          setProfileDraft({
+            name: user.name ?? "",
+            matric_number: user.matric_number ?? "",
+            department: user.department ?? "",
           });
+        } else {
+          setError("Failed to load profile.");
+        }
+
+        if (analyticsResult.status === "fulfilled") {
+          const value = Number(analyticsResult.value.data?.cgpa);
+          setCgpa(Number.isFinite(value) ? value : null);
+        } else {
+          setCgpa(null);
+        }
       } catch {
         if (active) {
           setError("Failed to load profile.");
@@ -338,7 +391,8 @@ const Profile = () => {
     setAvatarError(null);
 
     const formData = new FormData();
-    formData.append("avatar", file);
+    const uploadFile = (await resizeAvatarForUpload(file)) ?? file;
+    formData.append("avatar", uploadFile);
 
     try {
       const res = await api.post("/users/me/avatar", formData, {
@@ -616,6 +670,7 @@ const Profile = () => {
                   type="number"
                   min={60}
                   max={300}
+                  inputMode="numeric"
                   className="input-field"
                   value={configDraft.credits}
                   onChange={(e) =>
@@ -634,6 +689,7 @@ const Profile = () => {
                   type="number"
                   min={2}
                   max={16}
+                  inputMode="numeric"
                   className="input-field"
                   value={configDraft.semesters}
                   onChange={(e) =>

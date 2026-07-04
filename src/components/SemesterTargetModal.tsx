@@ -81,6 +81,7 @@ const SemesterTargetModal = ({
             min="1"
             max="5"
             step="0.01"
+            inputMode="decimal"
             value={targetGpa}
             onChange={(event) => setTargetGpa(event.target.value)}
             placeholder="4.50"

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { motion, AnimatePresence } from "framer-motion";
@@ -81,6 +81,8 @@ const getClassificationLabel = (cgpa: number): string => {
   return "a passing classification";
 };
 
+const roundToTwoDecimals = (value: number) => Math.round(value * 100) / 100;
+
 const GraduationTarget = () => {
   const navigate = useNavigate();
   const [targetCGPA, setTargetCGPA] = useState(targetOptions[0].value);
@@ -89,6 +91,7 @@ const GraduationTarget = () => {
   const [error, setError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showCalculationInfo, setShowCalculationInfo] = useState(false);
+  const loadedSemesterTargetRef = useRef(false);
   const [semesterTarget, setSemesterTarget] = useState<SemesterTargetState>({
     currentSemesterId: null,
     currentTargetGpa: null,
@@ -101,56 +104,86 @@ const GraduationTarget = () => {
   });
 
   useEffect(() => {
-    const fetchTarget = async () => {
+    let active = true;
+
+    const fetchTargetData = async () => {
       setLoading(true);
       setError("");
+      if (!loadedSemesterTargetRef.current) {
+        setSemesterTarget((current) => ({ ...current, loading: true, error: "" }));
+      }
+
       try {
-        const res = await api.get("/analytics/graduation-target", {
+        const targetRequest = api.get("/analytics/graduation-target", {
           params: { targetCGPA },
         });
-        setResult(res.data);
-      } catch (err) {
-        console.error(err);
-        setResult(null);
-        setError("Could not load graduation target data.");
+        const analyticsRequest = loadedSemesterTargetRef.current
+          ? Promise.resolve(null)
+          : api.get("/analytics");
+
+        const [targetResult, analyticsResult] = await Promise.allSettled([
+          targetRequest,
+          analyticsRequest,
+        ]);
+
+        if (!active) return;
+
+        if (targetResult.status === "fulfilled") {
+          setResult(targetResult.value.data);
+        } else {
+          console.error(targetResult.reason);
+          setResult(null);
+          setError("Could not load graduation target data.");
+        }
+
+        if (!loadedSemesterTargetRef.current) {
+          if (
+            analyticsResult.status === "fulfilled" &&
+            analyticsResult.value
+          ) {
+            const currentSemester =
+              analyticsResult.value.data?.current_semester ?? null;
+            const rawTargetGpa = currentSemester?.target_gpa;
+            const targetGpa =
+              rawTargetGpa != null ? Number(rawTargetGpa) : null;
+
+            setSemesterTarget({
+              currentSemesterId: currentSemester?.id ?? null,
+              currentTargetGpa: targetGpa,
+              loading: false,
+              saving: false,
+              error: "",
+              editMode: targetGpa == null,
+              draftValue: targetGpa != null ? targetGpa.toFixed(2) : "",
+              savedValue: targetGpa,
+            });
+            loadedSemesterTargetRef.current = true;
+          } else {
+            console.error(
+              analyticsResult.status === "rejected"
+                ? analyticsResult.reason
+                : new Error("Unexpected analytics response"),
+            );
+            setSemesterTarget((current) => ({
+              ...current,
+              loading: false,
+              error: "Could not load your target settings.",
+            }));
+          }
+        }
       } finally {
-        setLoading(false);
+        if (active) {
+          setLoading(false);
+        }
       }
     };
-    fetchTarget();
+
+    void fetchTargetData();
+
+    return () => {
+      active = false;
+    };
   }, [targetCGPA]);
-
-  useEffect(() => {
-    const fetchCurrentSemesterTarget = async () => {
-      setSemesterTarget((current) => ({ ...current, loading: true, error: "" }));
-      try {
-        const res = await api.get("/analytics");
-        const currentSemester = res.data?.current_semester ?? null;
-        const rawTargetGpa = currentSemester?.target_gpa;
-        const targetGpa = rawTargetGpa != null ? Number(rawTargetGpa) : null;
-        
-        setSemesterTarget({
-          currentSemesterId: currentSemester?.id ?? null,
-          currentTargetGpa: targetGpa,
-          loading: false,
-          saving: false,
-          error: "",
-          editMode: targetGpa == null,
-          draftValue: targetGpa != null ? targetGpa.toFixed(2) : "",
-          savedValue: targetGpa,
-        });
-      } catch (err) {
-        console.error(err);
-        setSemesterTarget((current) => ({
-          ...current,
-          loading: false,
-          error: "Could not load your target settings.",
-        }));
-      }
-    };
-
-    fetchCurrentSemesterTarget();
-  }, []);
 
   const currentSemesterId = result?.currentSemesterId ?? semesterTarget.currentSemesterId ?? null;
 
@@ -911,6 +944,19 @@ const GraduationTarget = () => {
                               draftValue: e.target.value,
                             }))
                           }
+                          onBlur={() => {
+                            const raw = semesterTarget.draftValue.trim();
+                            if (raw === "") return;
+                            const parsed = Number(raw);
+                            if (!Number.isFinite(parsed)) return;
+                            const rounded = roundToTwoDecimals(parsed).toFixed(2);
+                            if (rounded !== raw) {
+                              setSemesterTarget((current) => ({
+                                ...current,
+                                draftValue: rounded,
+                              }));
+                            }
+                          }}
                           className="w-full rounded-[16px] border border-[var(--border)] bg-[var(--bg-card)] px-4 py-3 font-mono text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[var(--accent)]/40"
                           placeholder="4.50"
                         />
