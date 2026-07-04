@@ -128,6 +128,7 @@ const formatNumber = (value: number) =>
 type SemesterCardState = "NO_SEMESTER" | "NO_GRADES" | "HAS_GRADES";
 
 const coerceFiniteNumber = (value: unknown): number | null => {
+  if (value === null || value === undefined) return null;
   const parsed = typeof value === "number" ? value : Number(value);
   return Number.isFinite(parsed) ? parsed : null;
 };

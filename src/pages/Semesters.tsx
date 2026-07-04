@@ -30,12 +30,6 @@ interface Semester {
   created_at: string;
 }
 
-const isLaterSemester = (a: Semester, b: Semester | null) => {
-  if (!b) return true;
-  if (a.level !== b.level) return a.level > b.level;
-  return a.semester_number > b.semester_number;
-};
-
 const Semesters = () => {
   const [semesters, setSemesters] = useState<Semester[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,15 +41,11 @@ const Semesters = () => {
     academic_year: "",
     level: "",
     semester_number: "",
-    is_current: false,
   });
   const [submitting, setSubmitting] = useState(false);
   const [actionError, setActionError] = useState<string | null>(null);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const currentSemester = semesters.reduce<Semester | null>(
-    (latest, sem) => (isLaterSemester(sem, latest) ? sem : latest),
-    null,
-  );
+  const currentSemester = semesters.find((semester) => semester.is_current) ?? null;
 
   const fetchSemesters = useCallback(async () => {
     try {
@@ -82,7 +72,6 @@ const Semesters = () => {
       academic_year: "",
       level: "",
       semester_number: "",
-      is_current: false,
     });
     setModalOpen(true);
   };
@@ -95,7 +84,6 @@ const Semesters = () => {
       academic_year: sem.academic_year,
       level: String(sem.level),
       semester_number: String(sem.semester_number),
-      is_current: sem.is_current,
     });
     setModalOpen(true);
   };
@@ -443,21 +431,6 @@ const Semesters = () => {
               </select>
             </div>
           </div>
-
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              id="semester-current"
-              type="checkbox"
-              checked={formData.is_current}
-              onChange={(e) =>
-                setFormData({ ...formData, is_current: e.target.checked })
-              }
-              className="w-4 h-4 rounded border-surface-600 text-primary-500 focus:ring-primary-500 accent-primary-500"
-            />
-            <span className="text-sm text-surface-300">
-              Set as current semester
-            </span>
-          </label>
 
           <div className="flex gap-3 pt-2">
             <button
