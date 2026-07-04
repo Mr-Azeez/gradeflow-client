@@ -1,0 +1,4 @@
+export const PROGRAM_TOTAL_SEMESTERS = 8;
+export const PROGRAM_TOTAL_COURSES = 48;
+export const PROGRAM_TOTAL_CREDIT_UNITS = 144;
+
