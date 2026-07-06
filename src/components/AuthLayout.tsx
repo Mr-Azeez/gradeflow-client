@@ -39,10 +39,15 @@ const AuthLayout = ({
       <div className="auth-orb auth-orb-top" />
       <div className="auth-orb auth-orb-bottom" />
       <div className="auth-grid" aria-hidden="true" />
-      
+
       {/* Option C: Abstract GPA graph background */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden hidden lg:block opacity-[0.06]">
-        <svg className="absolute top-[20%] left-[-10%] w-[120%] h-auto text-white" viewBox="0 0 1000 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          className="absolute top-[20%] left-[-10%] w-[120%] h-auto text-white"
+          viewBox="0 0 1000 400"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path d="M0,300 C150,300 250,150 400,150 C550,150 650,250 800,200 C900,166 950,50 1000,50" stroke="currentColor" strokeWidth="2" strokeDasharray="4 8" />
           <path d="M0,350 C200,350 300,200 450,200 C600,200 700,280 850,220 C920,190 980,100 1000,100" stroke="currentColor" strokeWidth="1" opacity="0.5" />
           <circle cx="400" cy="150" r="4" fill="currentColor" />
@@ -50,7 +55,6 @@ const AuthLayout = ({
           <circle cx="1000" cy="50" r="4" fill="currentColor" />
           <circle cx="450" cy="200" r="3" fill="currentColor" opacity="0.5" />
           <circle cx="850" cy="220" r="3" fill="currentColor" opacity="0.5" />
-          {/* Floating particles */}
           <circle cx="200" cy="100" r="2" fill="currentColor" opacity="0.8" />
           <circle cx="300" cy="250" r="1.5" fill="currentColor" opacity="0.6" />
           <circle cx="600" cy="80" r="2.5" fill="currentColor" opacity="0.7" />
@@ -101,20 +105,7 @@ const AuthLayout = ({
             </div>
           </div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="auth-creator-note"
-          >
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-sm">❤️</span>
-              <p className="auth-creator-label">Built for students.</p>
-            </div>
-            <p>Designed to remove the stress of GPA calculations so you can focus on learning.</p>
-            <p className="mt-3 text-[#7c5cff] font-medium">— GradeFlow Team</p>
-          </motion.div>
-
+         
         </motion.div>
       </div>
 
@@ -154,6 +145,10 @@ const AuthLayout = ({
           </div>
         </motion.div>
       </div>
+
+      <p className="auth-page-footer-credit">
+        Made with <span aria-label="love">❤️</span> by Azeez
+      </p>
     </div>
   );
 };

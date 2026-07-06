@@ -167,31 +167,6 @@ const Login = () => {
         </button>
       </form>
 
-      <div className="auth-divider">
-        <span>or continue with</span>
-      </div>
-
-      <button type="button" className="auth-social-button" aria-label="Continue with Google">
-        <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none">
-          <path
-            d="M21.6 12.23c0-.67-.06-1.31-.17-1.92H12v3.63h5.38a4.6 4.6 0 0 1-2 3.02v2.51h3.23c1.89-1.74 2.99-4.3 2.99-7.24Z"
-            fill="#4285F4"
-          />
-          <path
-            d="M12 22c2.7 0 4.96-.9 6.61-2.45l-3.23-2.51c-.89.6-2.03.96-3.38.96-2.6 0-4.8-1.75-5.6-4.11H2.05v2.58A9.99 9.99 0 0 0 12 22Z"
-            fill="#34A853"
-          />
-          <path
-            d="M6.4 13.89a5.98 5.98 0 0 1 0-3.78V7.54H2.05a10 10 0 0 0 0 8.93l4.35-2.58Z"
-            fill="#FBBC05"
-          />
-          <path
-            d="M12 5.07c1.47 0 2.79.51 3.83 1.5l2.87-2.87A9.65 9.65 0 0 0 12 2a9.99 9.99 0 0 0-9.95 5.54L6.4 10.1C7.2 7.74 9.4 5.07 12 5.07Z"
-            fill="#EA4335"
-          />
-        </svg>
-        Google Sign In
-      </button>
     </AuthLayout>
   );
 };
