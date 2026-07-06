@@ -1371,35 +1371,33 @@ const WhatIf = () => {
           </div>
 
           {/* Tabs */}
-          {!isRedirectedFromGraduationTarget && (
-            <div className="inline-flex p-1.5 bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl max-w-full overflow-x-auto no-scrollbar self-start">
-              {tabs.map((tab) => {
-                const active = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
-                    className="relative px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shrink-0"
+          <div className="inline-flex p-1.5 bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 rounded-2xl max-w-full overflow-x-auto no-scrollbar self-start">
+            {tabs.map((tab) => {
+              const active = activeTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className="relative px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shrink-0"
+                >
+                  {active && (
+                    <motion.div
+                      layoutId="activeTabHero"
+                      className="absolute inset-0 bg-slate-700/80 rounded-xl border border-slate-600/50 shadow-sm"
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                  <span
+                    className={`relative z-10 ${
+                      active ? "text-white" : "text-slate-400 hover:text-slate-200"
+                    }`}
                   >
-                    {active && (
-                      <motion.div
-                        layoutId="activeTabHero"
-                        className="absolute inset-0 bg-slate-700/80 rounded-xl border border-slate-600/50 shadow-sm"
-                        transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
-                      />
-                    )}
-                    <span
-                      className={`relative z-10 ${
-                        active ? "text-white" : "text-slate-400 hover:text-slate-200"
-                      }`}
-                    >
-                      {tab.label}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
+                    {tab.label}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         {/* Right / Bottom Side - Decorative Analytics */}
@@ -1468,7 +1466,7 @@ const WhatIf = () => {
         className="glass-card p-4 sm:p-6 overflow-hidden"
       >
         <AnimatePresence mode="wait">
-          {isRedirectedFromGraduationTarget || activeTab === "goal" ? (
+          {activeTab === "goal" ? (
             <motion.div
               key="goal"
               initial={{ opacity: 0, x: 10 }}
