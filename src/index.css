@@ -471,14 +471,21 @@ body {
 .auth-page {
   position: relative;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(124, 92, 255, 0.16), transparent 36%),
     radial-gradient(circle at bottom right, rgba(91, 75, 255, 0.14), transparent 34%),
     linear-gradient(135deg, #0b0d17 0%, #090b12 100%);
   color: #ffffff;
+}
+
+@media (min-width: 1024px) {
+  .auth-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(420px, 0.92fr);
+  }
 }
 
 .auth-orb {
@@ -517,11 +524,22 @@ body {
   pointer-events: none;
 }
 
-.auth-marketing,
-.auth-form-shell {
+.auth-marketing {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+}
+
+.auth-form-shell {
+  position: relative;
+  z-index: 1;
+  min-height: auto;
+}
+
+@media (min-width: 1024px) {
+  .auth-form-shell {
+    min-height: 100vh;
+  }
 }
 
 .auth-marketing {
@@ -700,10 +718,7 @@ body {
   padding: 0.5rem;
 }
 
-.auth-form-wrap {
-  width: 100%;
-  max-width: 33rem;
-}
+
 
 .auth-form-card {
   padding: 1.5rem 1.75rem 1.25rem;
@@ -1002,18 +1017,22 @@ body {
   }
 }
 
-@media (max-width: 900px) {
-  .auth-page {
-    grid-template-columns: minmax(0, 1fr);
-  }
+.auth-form-shell {
+  padding-block: 0.75rem 1rem;
+}
 
+.auth-form-wrap {
+  width: 100%;
+  max-width: 40rem;
+}
+
+@media (min-width: 1024px) {
   .auth-form-shell {
-    min-height: auto;
-    padding-block: 0.75rem 1rem;
+    padding-block: 0;
   }
 
   .auth-form-wrap {
-    max-width: 40rem;
+    max-width: 33rem;
   }
 }
 

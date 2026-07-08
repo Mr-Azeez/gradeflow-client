@@ -114,7 +114,7 @@ const Login = () => {
               id="login-password"
               type={showPassword ? "text" : "password"}
               className="auth-input pl-10 pr-12"
-              placeholder="••••••••"
+              placeholder={"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"}
               value={formData.password}
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })

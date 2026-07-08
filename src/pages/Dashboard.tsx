@@ -29,10 +29,7 @@ import {
 } from "lucide-react";
 import LoadingScreen from "../components/LoadingScreen";
 import SemesterTargetModal from "../components/SemesterTargetModal";
-import {
-  PROGRAM_TOTAL_COURSES,
-  PROGRAM_TOTAL_SEMESTERS,
-} from "../config/program";
+import { PROGRAM_TOTAL_SEMESTERS } from "../config/program";
 
 interface SemesterGPA {
   semester_id: string;
@@ -389,6 +386,11 @@ const Dashboard = () => {
     : currentSemesterCourseCount === 0
       ? "NO_GRADES"
       : "HAS_GRADES";
+  const totalGradedCourses = semesterGpas.reduce(
+    (sum, semester) => sum + (semester.graded_courses_count ?? 0),
+    0,
+  );
+  const hasAnyGrades = totalGradedCourses > 0;
   const cgpa = analytics?.cgpa ?? 0;
   const classification = getCGPAClass(cgpa);
   const classificationTone = getClassificationTone(cgpa);
@@ -565,7 +567,7 @@ const Dashboard = () => {
                   Overall GPA
                 </p>
                 <p className="mt-3 font-mono text-4xl font-semibold tracking-tight text-[var(--text-primary)]">
-                  {cgpa.toFixed(2)}
+                  {hasAnyGrades ? cgpa.toFixed(2) : "\u2014"}
                 </p>
               </div>
               <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--accent)]/20 bg-[var(--accent-soft)] text-[var(--accent)]">
@@ -573,8 +575,8 @@ const Dashboard = () => {
               </div>
             </div>
             <div className="flex items-center justify-between gap-3">
-              <span className={`badge ${classificationTone.chip}`}>
-                {classification}
+              <span className={`badge ${hasAnyGrades ? classificationTone.chip : "badge-pass"}`}>
+                {hasAnyGrades ? classification : "No grades yet"}
               </span>
               <span className="text-sm text-[var(--text-muted)]">out of 5.00</span>
             </div>
@@ -809,8 +811,8 @@ const Dashboard = () => {
             <InsightRow
               icon={<Award size={18} />}
               label="Academic Standing"
-              value={classification}
-              tone={classificationTone.chip}
+              value={hasAnyGrades ? classification : "No grades yet"}
+              tone={hasAnyGrades ? classificationTone.chip : "badge-pass"}
             />
             <InsightRow
               icon={<Target size={18} />}
@@ -820,12 +822,12 @@ const Dashboard = () => {
             <InsightRow
               icon={<GraduationCap size={18} />}
               label="Overall GPA"
-              value={`${cgpa.toFixed(2)} / 5.00`}
+              value={hasAnyGrades ? `${cgpa.toFixed(2)} / 5.00` : "Ungraded"}
             />
             <InsightRow
               icon={<BookOpen size={18} />}
               label="Courses Completed"
-              value={`${formatNumber(analytics?.total_courses ?? 0)} / ${PROGRAM_TOTAL_COURSES}`}
+              value={formatNumber(analytics?.total_courses ?? 0)}
             />
             <InsightRow
               icon={<Layers3 size={18} />}

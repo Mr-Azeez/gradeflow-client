@@ -150,7 +150,7 @@ const Register = () => {
               type={showPassword ? "text" : "password"}
               required
               className="auth-input pl-10 pr-12"
-              placeholder="••••••••"
+              placeholder={"\u2022\u2022\u2022\u2022\u2022\u2022\u2022\u2022"}
               value={formData.password}
               onChange={handleChange}
             />

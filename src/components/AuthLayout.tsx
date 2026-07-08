@@ -109,6 +109,34 @@ const AuthLayout = ({
         </motion.div>
       </div>
 
+      <div className="lg:hidden px-5 pt-8 pb-3 text-center">
+        <div className="auth-brand justify-center">
+          <span className="auth-brand-mark" />
+          <span className="auth-brand-name">GradeFlow</span>
+        </div>
+        <p className="mt-3 text-sm text-[var(--text-secondary)]">
+          Track your GPA, know exactly what you need to hit your target.
+        </p>
+        <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {features.map((feature) => {
+            const FeatureIcon = feature.icon;
+            return (
+              <span
+                key={feature.title}
+                className="inline-flex items-center gap-1.5 rounded-full border border-[var(--border)] bg-[var(--bg-card)] px-3 py-1.5 text-xs font-medium text-[var(--text-secondary)]"
+              >
+                <FeatureIcon
+                  size={14}
+                  strokeWidth={2.1}
+                  className="text-[var(--accent)]"
+                />
+                {feature.title}
+              </span>
+            );
+          })}
+        </div>
+      </div>
+
       <div className="auth-form-shell">
         <motion.div
           initial={{ opacity: 0, y: 18 }}

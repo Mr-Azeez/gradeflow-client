@@ -225,14 +225,14 @@ const Courses = () => {
       grade_point: "Points",
     };
     const orderMap: Record<SortField, { asc: string; desc: string }> = {
-      course_code: { asc: "A → Z", desc: "Z → A" },
-      course_title: { asc: "A → Z", desc: "Z → A" },
-      credit_units: { asc: "Low → High", desc: "High → Low" },
+      course_code: { asc: "A \u2192 Z", desc: "Z \u2192 A" },
+      course_title: { asc: "A \u2192 Z", desc: "Z \u2192 A" },
+      credit_units: { asc: "Low \u2192 High", desc: "High \u2192 Low" },
       score: { asc: "Lowest First", desc: "Highest First" },
-      grade: { asc: "Best → Worst", desc: "Worst → Best" },
-      grade_point: { asc: "Low → High", desc: "High → Low" },
+      grade: { asc: "Best \u2192 Worst", desc: "Worst \u2192 Best" },
+      grade_point: { asc: "Low \u2192 High", desc: "High \u2192 Low" },
     };
-    return `${labelMap[field]} • ${orderMap[field][order]}`;
+    return `${labelMap[field]} \u2022 ${orderMap[field][order]}`;
   };
 
   const fetchSemesters = useCallback(async () => {
@@ -636,7 +636,7 @@ const Courses = () => {
                   </span>
                 </div>
               </div>
-              <span className="text-surface-400 text-xs ml-1">▼</span>
+              <span className="text-surface-400 text-xs ml-1">{"\u25BC"}</span>
             </button>
 
             <AnimatePresence>
@@ -717,7 +717,7 @@ const Courses = () => {
                             label: tempField === "score"
                               ? "Lowest First"
                               : tempField === "grade"
-                                ? "Best → Worst"
+                                ? "Best \u2192 Worst"
                                 : "Ascending"
                           },
                           {
@@ -725,7 +725,7 @@ const Courses = () => {
                             label: tempField === "score"
                               ? "Highest First"
                               : tempField === "grade"
-                                ? "Worst → Best"
+                                ? "Worst \u2192 Best"
                                 : "Descending"
                           }
                         ].map((opt) => {
@@ -955,7 +955,7 @@ const Courses = () => {
                         Score
                       </p>
                       <p className="mt-1 font-mono text-[var(--text-primary)]">
-                        {course.score !== null ? course.score : "—"}
+                        {course.score !== null ? course.score : "\u2014"}
                       </p>
                     </div>
                     <div>
@@ -964,7 +964,7 @@ const Courses = () => {
                       </p>
                       <p className="mt-1 font-mono font-bold text-[var(--text-primary)]">
                         {course.grade_point == null
-                          ? "—"
+                          ? "\u2014"
                           : (Number(course.grade_point) || 0).toFixed(1)}
                       </p>
                     </div>
@@ -1027,7 +1027,7 @@ const Courses = () => {
                         {course.credit_units}
                       </td>
                       <td className="px-6 py-5 text-center text-sm font-mono text-[var(--text-secondary)]">
-                        {course.score !== null ? course.score : "—"}
+                        {course.score !== null ? course.score : "\u2014"}
                       </td>
                       <td className="px-6 py-5 text-center">
                         {course.grade ? (
@@ -1042,7 +1042,7 @@ const Courses = () => {
                       </td>
                       <td className="px-6 py-5 text-center text-sm font-bold font-mono text-[var(--text-primary)]">
                         {course.grade_point == null
-                          ? "—"
+                          ? "\u2014"
                           : (Number(course.grade_point) || 0).toFixed(1)}
                       </td>
                       <td className="px-6 py-5">
@@ -1173,8 +1173,14 @@ const Courses = () => {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      course_title: titleCase(e.target.value),
+                      course_title: e.target.value,
                     })
+                  }
+                  onBlur={() =>
+                    setFormData((current) => ({
+                      ...current,
+                      course_title: titleCase(current.course_title),
+                    }))
                   }
                   style={{ textTransform: "capitalize" }}
                   required
@@ -1247,7 +1253,7 @@ const Courses = () => {
                   disabled={submitting}
                   className="btn btn-primary flex-1"
                 >
-                  {submitting ? "Saving…" : editing ? "Update" : "Add Course"}
+                  {submitting ? "Saving\u2026" : editing ? "Update" : "Add Course"}
                 </button>
               </div>
               {actionError && (
