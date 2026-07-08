@@ -37,7 +37,6 @@ const Semesters = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Semester | null>(null);
   const [formData, setFormData] = useState({
-    name: "",
     academic_year: "",
     level: "",
     semester_number: "",
@@ -68,7 +67,6 @@ const Semesters = () => {
     setEditing(null);
     setActionError(null);
     setFormData({
-      name: "",
       academic_year: "",
       level: "",
       semester_number: "",
@@ -80,7 +78,6 @@ const Semesters = () => {
     setEditing(sem);
     setActionError(null);
     setFormData({
-      name: sem.name,
       academic_year: sem.academic_year,
       level: String(sem.level),
       semester_number: String(sem.semester_number),
@@ -348,23 +345,6 @@ const Semesters = () => {
         title={editing ? "Edit Semester" : "New Semester"}
       >
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-surface-400 mb-1.5">
-              Semester Name
-            </label>
-            <input
-              id="semester-name"
-              type="text"
-              className="input-field"
-              placeholder="e.g. First Semester"
-              value={formData.name}
-              onChange={(e) =>
-                setFormData({ ...formData, name: e.target.value })
-              }
-              required
-            />
-          </div>
-
           <div>
             <label className="block text-sm font-medium text-surface-400 mb-1.5">
               Academic Year
