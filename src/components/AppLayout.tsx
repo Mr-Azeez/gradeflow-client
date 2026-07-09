@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Menu, X, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import FeedbackWidget from "./FeedbackWidget";
 
 const AppLayout = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -48,7 +49,7 @@ const AppLayout = () => {
 
       {/* Main content area - accounts for sidebar width on desktop */}
       <main
-        className={`flex-1 transition-all duration-300 pt-16 md:pt-0 ${
+        className={`min-w-0 flex-1 transition-all duration-300 pt-16 md:pt-0 ${
           desktopCollapsed ? "md:ml-[72px]" : "md:ml-[260px]"
         }`}
       >
@@ -71,9 +72,10 @@ const AppLayout = () => {
       {/* Background ambient glow */}
       <div className="fixed top-0 right-0 w-[600px] h-[600px] bg-[var(--accent)]/5 rounded-full blur-3xl pointer-events-none" />
       <div className="fixed bottom-0 left-1/2 w-[400px] h-[400px] bg-[var(--accent)]/3 rounded-full blur-3xl pointer-events-none" />
+
+      <FeedbackWidget />
     </div>
   );
 };
 
 export default AppLayout;
-
